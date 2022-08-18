@@ -1,0 +1,96 @@
+$$\blacksquare\underline{\bold{OBSERVATIONS}} \bold{:-}$$
+$$\bold{i.}$$ when we first saw the $$\bold{Ciphertext}$$, we assumed it to be a substitution cipher, and a simple substitution cipher with frequency analysis $$\bold{failed}$$ to decrypt the message.
+
+$$\bold{ii.}$$ After entering  $$\bold{"GO"}$$ command, there is a $$\bold{hint}$$ provided in the last line which says $$\underline{\bold{"PLAY FAIR"}}$$., this lead to the thought of $$\bold{PLAYFAIR \space CIPHER.}$$
+
+$$\bold{iii.}$$ A key observation in Ciphertext is $$\bold{ no \space two \space letters \space in \space a \space digraph \space are \space the \space same}$$ which confirmed that PLAY FAIR makes the encryption.
+(a possible case would be "XX" present in plain text but not available in the given ciphertext).
+
+$$\bold{iv. \space KEY }$$ for playcipher is also provided as a $$\bold{hint}$$, but in $$\bold{"MORSE CODE"}$$, which we decrypted and found out to be $$\bold{"CRYPTANALYSIS".}$$ 
+
+$$\bold{v.}$$ To confirm and check the correctness of the above key, we $$\bold{automated}$$ the decryption process of the playcipher algorithm with multiple possible keys (i.e. words) taken from the file $$\bold{"words.txt".}$$
+  
+      (in general, we assumed the fact that PLAYFAIR CIPHER has general English
+      vocabulary as its KEY)
+
+      "words.txt" consists of $$\bold{416296}$$ different words of varying lengths that are
+      possible to be a key in Playfair cipher.
+
+$$\bold{vi.}$$ DECRYPTION program also gave us $$\bold{"CRYPTANALYSIS"}$$  as the key.
+
+$$\blacksquare\underline{\bold{TOOLS}} \bold{:-}$$
+
+$$\bold{i.}$$ $$\bold{Automated program}$$ to find the KEY among the possible vocabulary words in $$\bold{"words.txt"}$$.
+
+$$\bold{ii.}$$ Using the $$\bold{KEY}$$, we decrypted the Ciphertext by $$\bold{PLAYFAIR 
+ \space cipher}$$.
+
+
+---------------------------------------------------------------------------
+
+
+$$\blacksquare\underline{\bold{DECRYPTION \space ALGORITHM \space}}$$ $$\bold{=>}$$  $$\bold{"PLAYFAIR \space CIPHER"}$$
+
+$$\bold{Playfair \space cipher}$$ is a $$\underline{"digram"}$$ substitution cipher 
+which follows the manual symmetric encryption technique.
+
+$$\bullet$$The Playfair cipher uses a $$\bold{5x5}$$ matrix in which unique letters of the keyword
+are filled first left to right, and subsequently, all the remaining 
+unique alphabets are filled in alphabetical order.
+(note:- LETTER $$\bold{"I"}$$ and $$\bold{"j"}$$ will occupy only one cell of the matrix, which enables to fit 26 alphabets in a 5*5 matrix).
+
+$$\bullet$$Next, form the Digrams of the ciphertext, we decrypt each digram using the matrix.
+
+$$\bullet \bold{RULES \space FOR \space DECRYPTION \space :-}$$
+
+$$\bold{1)}$$If both the letters belong to the same row, then
+ take the letter to the left of each one from the matrix 
+in a WRAP-AROUND manner, respectively.
+$$\bold{2)}$$If both the letters belong to the same column, then
+ take the letter above to each one from the matrix 
+in a WRAP-AROUND manner, respectively.
+$$\bold{3)}$$If neither of the above rules is true, then 
+form a quadrilateral with the two letters 
+and take the letters on the other opposite diagonal respectively.
+
+
+
+
+$$\blacksquare \underline{\bold{ALGORITHM}}$$:-
+
+1)$$\bold{Score()}$$ function calculates the sum of Quadgram scores of ciphertext.
+
+2)$$\bold{rules\_func()}$$ performs decryption using  above RULES FOR DECRYPTION.
+
+3)$$\bold{matrix\_formation()}$$ builds a 5*5 matrix based on the KEY given.
+
+4)Firstly, try to find the $$\bold{KEY}$$ among all possible keys from
+the file $$\bold{"words.txt"}$$.
+
+5)Iterating through each $$\underline{word}$$ (possible key),perform $$\bold{matrix\_formation()}$$ and calculate score using $$\bold{Score()}$$ function.
+
+6)pick the $$\bold{OPTIMAL}$$ word of the high score, which serves as the
+$$\bold{"KEYWORD"}$$ for our analysis.
+
+7)Decrypt the ciphertext using KEYWORD, by performing matrix_formation(), which creates the matrix and then perform decryption digram-wise using rules_func().
+
+s8)we get the $$\bold{decrypted Plaintext}$$.
+
+$$\bold{End}$$
+
+$$\blacksquare \underline{\bold{MANUAL \space CORRECTIONS}}$$  :-
+$$\bold{i.}$$ As $$\bold{"X"}$$ will be attached for repeating letters during encryption 
+process ,these are corrected manually.
+[$$\bold{"OUTX" = > "OUT" }$$,
+,$$\bold{"WILXL" = >"WILL" }$$,
+$$\bold{"NEXED" = >"NEED"}$$].
+
+$$\bold{ii.}$$ $$\bold{"IOY" = >"JOY"}$$ , as $$\bold{"J"}$$ is  substituted as $$\bold{"I"}$$ in PLAYFAIR CIPHER.
+
+
+$$\blacksquare \underline{\bold{PLAINTEXT }}$$ => "BE WARY OF THE NEXT CHAMBER, THERE IS VERY LITTLE JOY THERE. SPEAK OUT THE PASSWORD "ABRA_CA_DABRA" TO GO THROUGH. MAY YOU HAVE THE STRENGTH FOR THE NEXT CHAMBER. TO FIND THE EXIT YOU FIRST WILL NEED TO UTTER MAGIC WORDS THERE."
+
+
+
+
+

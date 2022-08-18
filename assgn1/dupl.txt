@@ -1,0 +1,110 @@
+$$\blacksquare \underline{\bold {OBSERVATIONS}}:- $$
+$$\bold {i}.$$  When we first saw the cypher text, we assumed it to be a "caesar cipher" or
+a "substitution cipher".
+
+$$\bold {ii}.$$  We first tried to break the cipher with all possible 26 shifts of letters
+and conclude that it is not breakable with caesar cipher.
+Now, we tried Substitution cipher with frequency analysis.
+
+$$\bold {iii}.$$  The keen observation we made while performing frequency analysis is that spaces
+are shuffled, and words are not bound together.
+
+$$\bold {iv}.$$  Instead of manually performing frequency analysis, we came up with the
+thought of automating frequency analysis with a program.
+
+$$\bold {v}.$$  Instead of considering individual letter frequencies, we considered
+the frequencies of Quadgrams (four-letter pairs, such as --'tion','vity').
+
+$$\bold {vi}.$$  We collected a Quadgram source file for ENGLISH, in which "Quadgram and its 
+score", Score tells its frequency in English literature corpus.
+
+$$\bold {vii}.$$  The central theme of the algorithm is --> Calculating sum of all possible Quadgram
+Scores by making substitution of letters iteratively and the key 
+with max Quadgrams Score is considered to be optimal.
+
+
+$$ \blacksquare \underline{ \bold {ALGORITHM}}$$:-
+
+1) $$\bold{Score()}$$ function calculates the sum of Quadgram scores of ciphertext.
+
+2)Calculate the initial Score of ciphertext with $$\bold {INITIAL\_KEY}$$. 
+
+3)Now, Perform a Random Swap of the letter by key and calculate new 
+Ciphertext score of quadgrams by calling Score () function.
+
+4)If the new Score is optimal, then we accept the above swap in key 
+  or else we reject the swap.
+
+5)perform Step 3 and Step 4 iteratively around 10^5 iterations.
+
+6)Now, we have the optimal key., and so perform substitution of each letter
+in ciphertext based on the KEY.
+
+ $$\bold {End}$$.
+
+$$ \bigstar \space \underline{\bold {Note}}$$:- Run the program at least 3,4 times to get the preferred answer.
+
+
+$$\blacksquare \underline{\bold {Manual \space corrections}}:-$$
+
+$$ \blacktriangleright$$ There is a possibility of atmost 1 or 2 individual letters mismatch.,
+which we correct the mismatch Manually.
+
+$$ \blacktriangleright$$ This is unavoidable because, for small paragraphs, some letters frequency
+would be too low, and they will not contribute much to score calculation.,
+and might end up in the wrong places.
+
+
+$$\bold{Decrypting DIGITS}$$:-
+
+$$\bullet$$ In ciphertext we have =>
+    ("substitution cipher in which digits have been shifted by $$\bold2$$ places")
+
+$$\bullet$$ In plaintext =>
+   lets say we have digit  $$\bold {"x"}$$ in plaintext 
+   During encryption it becomes "$$x+x \space mod10 = 2$$"
+
+   Solution for $$\bold x $$ ={1 or 6}
+
+                  $$\bullet$$Shifting by x = 1 password has failed.
+                  $$\bullet$$Shifting by x = 6 password has $$\bold{passed}$$.
+
+$$\bullet$$ Hence DIGITS are shifted by $$\bold 6$$ places.
+
+$$\bullet$$ NEW PASSWORD = $$\bold {iRqy3U5qdgt}$$.
+
+
+
+$$\blacksquare  \underline{\bold{Pros}}$$:
+This algorithm works well for any substitution cipher where even if
+spaces are jumbled, and words are not bound together.
+
+
+***************************************************************
+
+
+$$\underline{\bold{ciphertext space}}$$ => "omkf pi hdn cmgef icphsck .H krg vphqkc c, fic mco kqgf ioqag eo qfcmckf oq ficpihdn cm .Kg dcgeficu hfcm pi hdn cmklo uuncdgmc oqfc mc kfoq afihqfiokgq c!Fi cpgy cvkc yeg mfio kdck kha cokh kodjuck vn k fofvfo gqpojicmoqli opiyoa of kihsc nccqki oefc ynr2 juhpck. Fi c jhkklgm yok oMxr9V1x ya flofigvffic xvgfck. Fio kokfice"
+
+$$\underline{\bold{plaintext space}}$$   => "irst ch amb eroft hecaves .A syo ucanse e, the rei snot hingo fi nterest in thechamb er .So meofthel ater ch amb erswi llbemore inte re stin gthanthison 
+e!Th ecod euse dfo rthi smes sag eisa simples ub s tituti oncipherinwh ichdig it shave beensh ifte dby6 places. Th e passwor dis iRqy3U5q dg twithoutthe quotes. Thi sisthef'"
+
+
+
+
+$$\underline{\bold MAPPING \space BETWEEN \space ELEMENTS} \space (element-wise)$$
+
+ciphertext elements =  ['c', 'f', 'k', 'o', 'i', 'g', 'h', 'm', 'q', 'p', 'd', 'n', 'v', 'e', 'y', 'a', 'u', 'j', 'l', 'r', 'x', 's', 'b', 't', 'w', 'z']
+ plaintext elements   = ['e', 't', 's', 'i', 'h', 'o', 'a', 'r', 'n', 'c', 'm', 'b', 'u', 'f', 'd', 'g', 'l', 'p', 'w', 'y', 'q', 'v', 'j', 'y', 'x', 'z']
+
+$$\bold {note}$$:- last 4 alphabets in cipher text elements have "ZERO" occurrence in ciphertext
+so their mapping  to key does not matter.
+
+$$\bullet\bold {In \space alphabetical \space order}$$
+
+$$\bold{CIPHERTEXT \space to \space PLAINTEXT \space Mapping}$$ $$\color{blue}| a \space|b \space|c \space|d \space|e \space|f \space|g \space|h \space|i \space|j \space|k \space|l \space|m \space|n \space|o \space|p \space|q \space|r \space|s \space|t \space|u \space|v \space|w \space|x \space|y \space|z \space|$$
+$$| g\space| j\space| e\space| m| f\space| t\space| o\space| a\space| h\space| p\space| s\space| w| r\space| b\space\space| i\space| c\space| n\space| y\space| v\space| x\space| l\space| u\space| k\space| q\space\space| d\space| y\space|$$
+
+
+**********************************************************************
+
+

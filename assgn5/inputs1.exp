@@ -1,0 +1,58 @@
+#!/usr/bin/expect -f
+log_file output.txt 
+set timeout 5
+spawn ssh -o StrictHostKeyChecking=no students@172.27.26.188
+
+expect "*?assword:*"
+send -- "cs641a\r"
+
+expect "*group name*"
+
+send -- "ANV\r"
+
+expect "*assword*"
+
+send -- "anv@1998\r"
+
+expect "*start at:*"
+
+send "5\r"
+
+expect "*some deep underground well!*"
+
+send -- "go\r"
+
+expect "*nothing to grab ...*"
+
+send -- "wave\r"
+
+expect "*yields the same result!*"
+
+send -- "dive\r"
+
+expect "*somewhere deep inside...*"
+
+send -- "go\r"
+
+expect -- "*Who designed all this?*"
+
+send -- "read\r"
+
+expect "*the screen...*"
+
+set f [open "input.txt"]
+set inputs [split [read $f] "\n"]
+close $f
+
+foreach inp $inputs {
+
+send -- "$inp\r"
+
+expect "*ress c to continue>*"
+
+
+send -- "c\r"
+
+}
+
+log_file

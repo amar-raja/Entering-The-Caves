@@ -1,0 +1,65 @@
+GIVEN that :- 
+        Password is an element of the multiplicative
+        group $$Z_p^*$$ where $${p}$$ = 455470209427676832372575348833 is a prime.
+        After looking around, we found three pairs of numbers of the
+        form ($$\bold{a}$$, $$\bold{password}$$ * $$\bold{g^a}$$) where $$\bold{g}$$ is a element in $$Z_p^*$$ and $$\bold{a}$$ is
+        an integer. The $$\bold{g}$$ in each pair is the same.
+
+                        $$a_1 , {x}$$ = (429,  431955503618234519808008749742)
+                        $$a_2 , y$$ = (1973, 176325509039323911968355873643)
+                        $$a_3 , z$$ = (7596, 98486971404861992487294722613)
+
+After looking for more numbers, we find
+
+                        5___50__4_____31_____94__9
+
+We thought this was $$\bold{g}$$ with many digits missing. 
+We need to figure out the password to complete the level. 
+
+here, let us assume
+	x = $$\big({password} * g^{a_1}\big)\mod p$$      $$\to (1)$$
+	y = $$\big({password} * g^{a_2}\big)\mod p$$     $$\to (2)$$
+	z = $$\big({password} * g^{a_3}\big)\mod p$$     $$\to (3)$$
+Here, we do not know the password. So we eliminate the password term.  
+
+We eliminate the password term by dividing equations 2 and 3 ,
+	
+we get $$\Rarr  z * modinv(y,p) = g^{a_3} * modinv(g^{a_2},p) \mod p $$
+
+  $$\Rarr   z * modinv(y,p) = g^{a_3 - a_2} \mod p  \to (4)$$
+
+here, $$modinv(y,p)$$ means $$\bold{modulo\ multiplicative\ inverse}$$ of y under modulo p. 
+
+We need to eliminate the power $$(a_3-a_2)$$  on the right side of the equation 4 to get $$"g"$$.
+ 
+Now, we have to find some value $$"d"$$ such that $$(g^{a_3 - a_2}\mod p)^{d} \mod p = g $$
+
+To be technical, we need to find a $$"d"$$ such that 
+                              $$ (a_3-a_2)*d \mod \phi(p) = 1 $$
+$$\phi$$ function is $$\bold{Euler's totient function}$$. 
+$$\phi(n)$$ is the count of numbers less than n and relatively prime to n. 
+$$\phi(p) = p-1$$ as p is a prime number. 
+               $$(a_3-a_2) * d \mod (p-1) = 1 $$
+          => $$d = modinv(a_3-a_2,p-1) $$
+
+So, applying the power of $$"d"$$ on both sides of $$\bold{equation 4}$$. We get
+	
+	$$((z * modinv(y,p)) ^ d) \mod p  =  ((g ^ {(a_3 - a_2)} \mod p) ^ d) \mod p$$
+
+    => 	$$((z * modinv(y,p)) ^ d) \mod p  = g $$
+
+    =>       $$ g = ((z * modinv(y,p)) ^ d) \mod p $$
+
+
+In this way, we find $$\bold g$$. We got the value of $$\bold g$$ to be 
+$$\bold{52565085417963311027694339}$$
+
+Now, we use $$\bold{equation 3}$$ to find out the value of password. 
+
+	$$z = password * g^{a_3} \mod p$$
+    =>  $$password = (z * modinv(g^{a_3} \mod p)) \mod p$$
+	
+We get the password to be $$\bold{134721542097659029845273957}$$
+
+We can convert the password to hexadecimal and convert it to 
+binary string to get the password as $$\bold{"open\_sesame".}$$ 

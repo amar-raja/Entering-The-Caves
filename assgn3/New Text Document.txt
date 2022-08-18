@@ -1,0 +1,64 @@
+We use gmpy2 module to calculate inverse modulo in the program. 
+We use binascii module to convert the password to a binary string.  
+        Password is an element of the multiplicative
+        group Z_p^* where p = 455470209427676832372575348833 is a prime.
+        After looking around, we found three pairs of numbers of the
+        form (a, password * g^a) where g is a element in Z_p^* and a is
+        an integer. The g in each pair is the same.
+
+                        a1 , x = (429,  431955503618234519808008749742)
+                        a2 , y = (1973, 176325509039323911968355873643)
+                        a3 , z = (7596, 98486971404861992487294722613)
+
+After looking for more numbers, we find
+
+                        5___50__4_____31_____94__9
+
+We thought this was g with many digits missing. 
+We need to figure out the password to complete the level. 
+
+here, let us assume
+	x = password * g^a1 mod p  -> equation 1
+	y = password * g^a2 mod p  -> equation 2
+	z = password * g^a3 mod p  -> equation 3
+
+Here, we do not know the password. So we need to eliminate the password term somehow.  
+
+We eliminate the password term using the equations 2 and 3 like this:
+	
+  	z * modinv(y,p) = g^a3 * modinv(g^a2,p) mod p 
+
+  => 	z * modinv(y,p) = g^(a3-a2) mod p    -> equation 4
+
+here, modinv(y,p) means multiplicative inverse of y under modulo p. 
+
+We need to eliminate the power (a3-a2) somehow on the right side of the equation 4 to get 'g'.
+ 
+Now, we have to find some value 'd' such that (g^(a3-a2)mod p)^d mod p = g 
+To be technical, we need to find a d such that (a3-a2)*d mod phi(p) = 1 
+phi() function is Euler's totient function. 
+phi(n) is the count of numbers less than n and relatively prime to n. 
+phi(p) = p-1 as p is a prime number. 
+               (a3-a2) * d mod (p-1) = 1
+          => d = modinv(a3-a2,p-1) 
+
+So, applying the power of d on both sides of equation 4. We get
+	
+	((z * modinv(y,p)) ^ d) mod p  =  ((g ^ (a3 - a2) mod p) ^ d) mod p
+
+    => 	((z * modinv(y,p)) ^ d) mod p  = g
+
+    =>        g = ((z * modinv(y,p)) ^ d) mod p
+
+
+In this way, we find g. We got the value of g to be 52565085417963311027694339
+
+Now, we use equation 3 to find out the value of password. 
+
+	z = password * g^a3 mod p
+    =>  password = (z * modinv(g^a3 mod p)) mod p
+	
+We get the password to be 134721542097659029845273957
+
+We can convert the password to hexadecimal and convert it to 
+binary string to get the password as "open_sesame". 

@@ -1,0 +1,62 @@
+#!/usr/bin/expect -f
+#!/usr/bin/expect -f
+
+set timeout -1
+
+spawn ssh students@172.27.26.188
+
+expect "students@172.27.26.188's password:"
+
+send -- "cs641a\n"
+
+expect "*group name:"
+
+send -- "ANV\n"
+
+expect "*password:"
+
+send --  "anv@1998\n"
+
+expect "*Level you want to start at:"
+send --  "3\r"
+
+expect "*You decide to investigate*"
+send -- "thrnxxtzy\r"
+
+expect "*So does a glass panel next to it*"
+send -- "read\r"
+
+expect "*loudly to pass this level!*"
+send -- "134721542097659029845273957\r"
+
+expect "*continue>"
+send -- "c\r"
+
+expect "*your right and you shiver again."
+send -- "read\r"
+
+expect "*I am sure you can figure it out though*"
+
+
+set f [open "/home/ar/Downloads/plaintext.txt" "r"] 
+set data [read $f]
+
+set count 0
+
+#linebyline
+log_file -a "logs_cipher.txt"
+foreach line $data {
+	send -- "$line\r"
+	send -- "\r"
+	send -- "c\r"
+	
+	
+}
+
+close $f
+
+interact
+
+
+
+expect eof

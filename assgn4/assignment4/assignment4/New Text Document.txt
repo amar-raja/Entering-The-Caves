@@ -1,0 +1,95 @@
+We were told by the spirit that the characters were mapped such that 2 letters were represented by single byte. We observed that the cipher text only had characters from 'd' to 's'. That means, each character should be represented by 4 bits. We assumed that 'd' corresponds to '0000', e corresponds to '0001', ........................ s corresponds to '1111'. 
+
+
+The spirit said that either 4 round or 6 round DES was used. We thought that 4 round DES is too easy to be given for the assignment. So, we assumed that it would be 6 round DES. We wanted to use 4 round characteristics in order to break the encryption. So, we will consider the plain text pairs with XOR values of 405C0000 04000000 (Hexadecimal) after the initial permutation. The XOR before the initial permutation is 00009010 1000500. 
+
+We then decided to generate the inputtext pairs with these XOR values. We generated around 100000 pairs with this XOR value. 
+We remembered that the spirit told us that it will give the cipher text to any plain text that we type.
+We used an expect script to automatically get the cipher texts for these plain texts that we generated. 
+We wanted to use this cipher text in order to find the key in the 6th round. This was the hardest part. We have the left and right halves of the output of the 6th round ( these are the cipher text). We know that for 4 round characteristic, after 4 rounds of encryption, the XOR of the outputs of the 4th round will be  00540000 04000000 with a probability of 0.00038. 
+The right half of the XOR of output of the 4th round  will be equal to the left half of the XOR of output of 5th round. The right half of the XOR of the output of the 5th round is equal to the XOR of the left half of cipher text. 
+
+
+For each ciphertext pair, we will do the following:
+We first took the ciphertext pair and converted each of them into binary based on our assumed mapping from above. Let each cipher text pair be  C1, C2. Then, we applied inverse final permutation to our cipher texts pairs. 
+
+C1_left be left half of the C1. C1_right be right half of the C1. 
+Similar for C2_left and C2_right. 
+We XORed the right halves of the cipher text pairs with each other and with 04000000. 
+=> XOR_right = XOR(C1_right, C2_right, 04000000) 
+
+Then we applied inverse of round permutation to XOR_right. This will equal to output XOR of the sbox. 
+
+=> sbox_out = inverse_round_permutation(XOR_right)
+
+The input of the sbox will be equal to the expansion of the XOR of the C1_left and C2_left. 
+
+=> sbox_in = expansion ( XOR ( C1_left, C2_left) ) 
+
+We will expand C1_left
+
+=> C1_left = expansion ( C1_left ) 
+
+We will use sbox_in, sbox_out and C1_left in order to guess the key. 
+
+For each sbox, we will do the following:
+We generated the 16 pairs of output values that would equal the sbox_out value. 
+From this 16 pairs of output values, we found out the sbox input values that would equal to the sbox_in. Each of these input values will be XORed with the C1_left corresponding bits to get the key values for that particular sbox. 
+We will calculate the key frequencies from these. 
+
+For each sbox, we got the most frequent keys. We executed this procedure for another 100000 pairs. The results look like this:
+
+Result 1 (key,freq):
+SBOX 1: (45, 7064) 
+SBOX 2: (51, 7151)
+SBOX 3: (21, 6453)
+SBOX 4: (56, 6413)
+SBOX 5: (15, 7243)
+SBOX 6: (16, 7081) 
+SBOX 7: (9, 7105)
+SBOX 8: (61, 7102)
+
+Result 2 (key, freq):
+SBOX 1: (45, 6531) 
+SBOX 2: (51, 8216)
+SBOX 3: (37, 6483)
+SBOX 4: (37, 6417)
+SBOX 5: (15, 6532)
+SBOX 6: (16, 6622)
+SBOX 7: (9, 6596)
+SBOX 8: (61, 6803)
+
+From this, we can see that the frequency values of SBOX 1, SBOX 2, SBOX 5, SBOX 6, SBOX 7, SBOX 8 are same. So, we can say that we have found out the key values of all Sboxes except for SBOX 3 and SBOX 4. So, we decided to brute force the key values for these sboxes. 
+
+So, the 48 bit key looks like this:
+101101110011XXXXXXXXXXXX001111010000001001111101
+
+Here, 'X' means we do not know that particular bit. 
+We applied the reverse of the key scheduling to get the following 56 bit key:
+XX1XX1XXX10X1X10XXX11XX10X0X1001001X10001100X11X1101X001
+
+From this, each 'X' can either take a value of '0' or '1'. So, we generated a total of 2^20 keys from the above key. 
+
+We took a plain text "jskenodqpqqdnigi" and got it's cipher text from server as "okrppopiopskesqs". 
+
+So, we decided to use each of these 2^20 keys and decided to encode our plain text "jskenodqpqqdnigi". If the encrypted text equals "okrppopiopskesqs", that means we have found our correct key. 
+
+The correct 56bit key we found is:
+01101110010111100111101100001001001110001100111111010001
+The 64 bit key with odd parity is( in hexadecimal ):
+3BE3CDEC6BA8E90E
+
+Now, when we type password in server, it gave us the following encrypted text:
+"sjfkhfkjsfpdlfjodegomrpkljqqkord"
+
+We divided it into 2 equal halves and decrypted each of them with the above key.
+The binary value of the combination of the decryption is:
+01110001011010010111011001101010011001110111100101101001011011010110110001100010001100000011000000110000001100000011000000110000
+
+We considered each byte (8 bits ) in the the above thing as one ascii character and then we found the value to be:
+qivjgyimlb000000
+We removed the zeroes and the password we obtained is :
+
+Decrypted password: "qivjgyimlb" 
+
+We entered this password to clear the level. 
